@@ -34,8 +34,7 @@ class _StatePerguntaApp extends State<PerguntaApp> {
     ];
 
     List<String> resposta = perguntas[_perguntaRespondida].cast()['resposta'];
-    Iterable<Widget> widget =
-        resposta.map((e) => Resposta(e, _responder)).cast<Widget>();
+    List<Widget> widget = resposta.map((e) => Resposta(e, _responder)).toList();
 
     // for (var element in resposta) {
     //   widget.add(Resposta(element, _responder));
