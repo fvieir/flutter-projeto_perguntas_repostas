@@ -7,33 +7,40 @@ void main() {
 }
 
 class _StatePerguntaApp extends State<PerguntaApp> {
-  var _perguntaRespondida = 0;
+  var _perguntaSelecionanda = 0;
+
+  final _perguntas = const [
+    {
+      'texto': 'Qual é a sua COR favorita?',
+      'resposta': ['Azul', 'Verde', 'Amarelo', 'Preto']
+    },
+    {
+      'texto': 'Qual é o seu ANIMAL favorito?',
+      'resposta': ['Coelho', 'Cachorro', 'Gato', 'Elefante']
+    },
+    {
+      'texto': 'Qual é o seu INSTRUTOR favorito?',
+      'resposta': ['Maria', 'Bia', 'João', 'Léo']
+    }
+  ];
 
   void _responder() {
     setState(() {
-      _perguntaRespondida++;
+      if (temPerguntaSelecionanda) {
+        _perguntaSelecionanda++;
+      }
     });
-    print('Pergunta respondida');
+  }
+
+  bool get temPerguntaSelecionanda {
+    return _perguntaSelecionanda < _perguntas.length;
   }
 
   @override
   Widget build(BuildContext context) {
-    final perguntas = [
-      {
-        'texto': 'Qual é a sua COR favorita?',
-        'resposta': ['Azul', 'Verde', 'Amarelo', 'Preto']
-      },
-      {
-        'texto': 'Qual é o seu ANIMAL favorito?',
-        'resposta': ['Coelho', 'Cachorro', 'Gato', 'Elefante']
-      },
-      {
-        'texto': 'Qual é o seu INSTRUTOR favorito?',
-        'resposta': ['Maria', 'Bia', 'João', 'Léo']
-      }
-    ];
-
-    List<String> resposta = perguntas[_perguntaRespondida].cast()['resposta'];
+    List<String> resposta = temPerguntaSelecionanda
+        ? _perguntas[_perguntaSelecionanda].cast()['resposta']
+        : [];
     List<Widget> widget = resposta.map((e) => Resposta(e, _responder)).toList();
 
     // for (var element in resposta) {
@@ -45,12 +52,14 @@ class _StatePerguntaApp extends State<PerguntaApp> {
         appBar: AppBar(
           title: const Text('Perguntas'),
         ),
-        body: Column(
-          children: [
-            Questao(perguntas[_perguntaRespondida]['texto'] as String),
-            ...widget,
-          ],
-        ),
+        body: temPerguntaSelecionanda
+            ? Column(
+                children: [
+                  Questao(_perguntas[_perguntaSelecionanda]['texto'] as String),
+                  ...widget,
+                ],
+              )
+            : null,
       ),
     );
   }
