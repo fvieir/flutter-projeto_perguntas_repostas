@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'questao.dart';
-import './resposta.dart';
+import 'package:projeto_pergunta/questionario/questionario.dart';
 import './resultado/resultado.dart';
 
 void main() {
@@ -39,11 +38,6 @@ class _StatePerguntaApp extends State<PerguntaApp> {
 
   @override
   Widget build(BuildContext context) {
-    List<String> resposta = temPerguntaSelecionanda
-        ? _perguntas[_perguntaSelecionanda].cast()['resposta']
-        : [];
-    List<Widget> widget = resposta.map((e) => Resposta(e, _responder)).toList();
-
     // for (var element in resposta) {
     //   widget.add(Resposta(element, _responder));
     // }
@@ -54,11 +48,11 @@ class _StatePerguntaApp extends State<PerguntaApp> {
           title: const Text('Perguntas'),
         ),
         body: temPerguntaSelecionanda
-            ? Column(
-                children: [
-                  Questao(_perguntas[_perguntaSelecionanda]['texto'] as String),
-                  ...widget,
-                ],
+            ? Questionario(
+                perguntas: _perguntas,
+                perguntaSelecionanda: _perguntaSelecionanda,
+                quandoResponderFn: _responder,
+                temPerguntaSelecionanda: temPerguntaSelecionanda,
               )
             : const Resultado(),
       ),
