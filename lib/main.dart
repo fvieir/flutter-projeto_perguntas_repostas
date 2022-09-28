@@ -6,55 +6,66 @@ void main() {
   runApp(const PerguntaApp());
 }
 
-class _StatePerguntaApp extends State<PerguntaApp> {
-  var _perguntaSelecionanda = 0;
-
+class _PerguntaAppState extends State<PerguntaApp> {
+  var _perguntaSelecionada = 0;
+  var _pontuacaoTotal = 0;
   final _perguntas = const [
     {
-      'texto': 'Qual é a sua COR favorita?',
-      'resposta': ['Azul', 'Verde', 'Amarelo', 'Preto']
+      'texto': 'Qual é a sua cor favorita?',
+      'respostas': [
+        {'texto': 'Preto', 'pontuacao': 10},
+        {'texto': 'Vermelho', 'pontuacao': 5},
+        {'texto': 'Verde', 'pontuacao': 3},
+        {'texto': 'Branco', 'pontuacao': 1},
+      ],
     },
     {
-      'texto': 'Qual é o seu ANIMAL favorito?',
-      'resposta': ['Coelho', 'Cachorro', 'Gato', 'Elefante']
+      'texto': 'Qual é o seu animal favorito?',
+      'respostas': [
+        {'texto': 'Coelho', 'pontuacao': 10},
+        {'texto': 'Cobra', 'pontuacao': 5},
+        {'texto': 'Elefante', 'pontuacao': 3},
+        {'texto': 'Leão', 'pontuacao': 1},
+      ],
     },
     {
-      'texto': 'Qual é o seu INSTRUTOR favorito?',
-      'resposta': ['Maria', 'Bia', 'João', 'Léo']
+      'texto': 'Qual é o seu instrutor favorito?',
+      'respostas': [
+        {'texto': 'Leo', 'pontuacao': 10},
+        {'texto': 'Maria', 'pontuacao': 5},
+        {'texto': 'João', 'pontuacao': 3},
+        {'texto': 'Pedro', 'pontuacao': 1},
+      ],
     }
   ];
 
-  void _responder() {
-    setState(() {
-      if (temPerguntaSelecionanda) {
-        _perguntaSelecionanda++;
-      }
-    });
+  void _responder(int pontuacao) {
+    if (temPerguntaSelecionada) {
+      setState(() {
+        _perguntaSelecionada++;
+        _pontuacaoTotal += pontuacao;
+      });
+    }
   }
 
-  bool get temPerguntaSelecionanda {
-    return _perguntaSelecionanda < _perguntas.length;
+  bool get temPerguntaSelecionada {
+    return _perguntaSelecionada < _perguntas.length;
   }
 
   @override
   Widget build(BuildContext context) {
-    // for (var element in resposta) {
-    //   widget.add(Resposta(element, _responder));
-    // }
-
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
           title: const Text('Perguntas'),
         ),
-        body: temPerguntaSelecionanda
+        body: temPerguntaSelecionada
             ? Questionario(
                 perguntas: _perguntas,
-                perguntaSelecionanda: _perguntaSelecionanda,
-                quandoResponderFn: _responder,
-                temPerguntaSelecionanda: temPerguntaSelecionanda,
+                perguntaSelecionada: _perguntaSelecionada,
+                quandoResponder: _responder,
               )
-            : const Resultado(),
+            : Resultado(total: _pontuacaoTotal),
       ),
     );
   }
@@ -64,7 +75,7 @@ class PerguntaApp extends StatefulWidget {
   const PerguntaApp({super.key});
 
   @override
-  _StatePerguntaApp createState() {
-    return _StatePerguntaApp();
+  _PerguntaAppState createState() {
+    return _PerguntaAppState();
   }
 }

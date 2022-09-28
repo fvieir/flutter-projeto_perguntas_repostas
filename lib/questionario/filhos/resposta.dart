@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-// ignore: must_be_immutable
 class Resposta extends StatelessWidget {
   final String texto;
   final void Function() quandoSelecionado;
@@ -9,8 +8,7 @@ class Resposta extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // ignore: sized_box_for_whitespace
-    return Container(
+    return SizedBox(
       width: double.infinity,
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
